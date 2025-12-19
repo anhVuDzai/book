@@ -1,3 +1,5 @@
+<!-- *** -->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,14 +8,13 @@
     <title>Document</title>
   </head>
   <body>
-    <script type="module">
+    <script>
       // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
       import {
-        getFirestore,
-        collection,
-        getDocs,
-      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
       // TODO: Add SDKs for Firebase products that you want to use
       // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,23 +22,16 @@
       // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
       const firebaseConfig = {
-        apiKey: "AIzaSyAuOoEfIybpFl_esNkPdO06X6s6Fvsyt3Q",
-        authDomain: "jsi36-7de41.firebaseapp.com",
-        projectId: "jsi36-7de41",
-        storageBucket: "jsi36-7de41.firebasestorage.app",
-        messagingSenderId: "369327670545",
-        appId: "1:369327670545:web:8eea75fb64f81726f4f8b0",
-        measurementId: "G-W8WFM9KTW9",
+        apiKey: "AIzaSyCqtouu7EB6vThIRKJ6VSA8MURsIXQfuWI",
+        authDomain: "book-4469c.firebaseapp.com",
+        projectId: "book-4469c",
+        storageBucket: "book-4469c.firebasestorage.app",
+        messagingSenderId: "597597915442",
+        appId: "1:597597915442:web:ff624237ef7d52961d6f2b",
+        measurementId: "G-8DNPL9NF8P",
       };
 
       const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-
-      let data = await getDocs(collection(db, "product"));
-
-      data.forEach((item) => {
-        console.log(item.data());
-      });
     </script>
   </body>
 </html>

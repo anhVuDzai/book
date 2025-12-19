@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <style>
+      .input {
+        padding: 10px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #555;
+        outline: none;
+        width: 400px;
+      }
+
+      .input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+      }
+
+      .buttonsty {
+        background-color: #26668b;
+        border: 1px solid rgba(27, 31, 35, 0.15);
+        border-radius: 6px;
+        box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 6px 16px;
+        position: relative;
+        text-align: center;
+        transition: 0.25s;
+        width: 200px;
+        height: 35px;
+      }
+
+      .buttonsty:hover {
+        background-color: #1c4c68;
+        transform: scale(1.1);
+      }
+
+      .font {
+        font-family: "Gill Sans", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    style="
+      display: flex;
+      justify-content: center;
+      background-color: #ffffff;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)),
+        url('') no-repeat center center;
+      background-size: cover;
+    "
+  >
+    <div
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 0px solid;
+        width: 600px;
+        border-radius: 15px;
+        height: 350px;
+        background-color: rgba(185, 185, 185, 0.349);
+        box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
+      "
+    >
+      <h1 class="font" style="margin-top: 0px; color: #ffffff">LOGIN</h1>
+      <input placeholder="Email" class="input email" type="email" /><br />
+      <input
+        placeholder="Password"
+        class="input password"
+        type="password"
+      /><br /><input
+        placeholder="Confirm password"
+        class="input confirmpassword"
+        type="password"
+      /><br />
+
+      <div style="margin: 0px;">
+        <p class="font" style="color: #fff">
+          Already have an account?
+          <a href="./login.html" style="color: #0099ff">Login.</a>
+        </p>
+      </div>
+      <button class="buttonsty" type="button">Register</button>
+    </div>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCqtouu7EB6vThIRKJ6VSA8MURsIXQfuWI",
+        authDomain: "book-4469c.firebaseapp.com",
+        projectId: "book-4469c",
+        storageBucket: "book-4469c.firebasestorage.app",
+        messagingSenderId: "597597915442",
+        appId: "1:597597915442:web:ff624237ef7d52961d6f2b",
+        measurementId: "G-8DNPL9NF8P",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      const btnRegister = document.querySelector(".buttonsty");
+
+      btnRegister.addEventListener("click", () => {
+        const email = document.querySelector(".email").value;
+        const password = document.querySelector(".password").value;
+        const confirmpassword = document.querySelector(".confirmpassword").value;
+
+        if (password == confirmpassword) {
+          createUserWithEmailAndPassword(auth, email, password)
+            .then((user) => {
+              window.location.href = "index.html";
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+        } else {
+          console.log("Confirm password does not match!");
+        }
+      });
+    </script>
+  </body>
+</html>
