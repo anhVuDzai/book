@@ -5,6 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register</title>
     <style>
+      body {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        place-items: center;
+        background-color: #ffffff;
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)),
+          url("") no-repeat center center;
+        background-size: cover;
+      }
+
+      .register {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 0px solid;
+        width: 600px;
+        border-radius: 15px;
+        height: 400px;
+        background-color: rgba(185, 185, 185, 0.349);
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+          rgba(0, 0, 0, 0.22) 0px 15px 12px;
+      }
+
+      .footer {
+        width: 100%;
+      }
+
       .input {
         padding: 10px;
         border: 2px solid #ccc;
@@ -44,41 +74,19 @@
         transform: scale(1.1);
       }
 
+      .buttonsty:active {
+        background-color: #194761;
+        transform: scale(1);
+      }
+
       .font {
         font-family: "Gill Sans", sans-serif;
       }
     </style>
   </head>
-  <body
-    style="
-      display: flex;
-      justify-content: center;
-      background-color: #ffffff;
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)),
-        url('') no-repeat center center;
-      background-size: cover;
-    "
-  >
-    <div
-      style="
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        border: 0px solid;
-        width: 600px;
-        border-radius: 15px;
-        height: 350px;
-        background-color: rgba(185, 185, 185, 0.349);
-        box-shadow: 0 0px 20px rgba(0, 0, 0, 0.5);
-      "
-    >
-      <h1 class="font" style="margin-top: 0px; color: #ffffff">LOGIN</h1>
+  <body>
+    <div class="register">
+      <h1 class="font" style="margin-top: 0px; color: #ffffff">REGISTER</h1>
       <input placeholder="Email" class="input email" type="email" /><br />
       <input
         placeholder="Password"
@@ -90,13 +98,33 @@
         type="password"
       /><br />
 
-      <div style="margin: 0px;">
+      <div style="margin: 0px">
         <p class="font" style="color: #fff">
           Already have an account?
           <a href="./login.html" style="color: #0099ff">Login.</a>
         </p>
       </div>
       <button class="buttonsty" type="button">Register</button>
+    </div>
+    <div class="footer">
+      <div
+        style="
+          border: 0;
+          border-top: 1px solid gray;
+          max-width: 80%;
+          align-items: center;
+          margin-left: 10%;
+          display: flex;
+          justify-content: space-between;
+        "
+      >
+        <div class="font" style="color: rgba(255, 255, 255, 0.719)">
+          <div style="font-size: small">
+            <p>&copy; 2025 Book. All rights reserved.</p>
+          </div>
+        </div>
+        <div style="display: flex"></div>
+      </div>
     </div>
     <script type="module">
       // Import the functions you need from the SDKs you need
@@ -129,7 +157,8 @@
       btnRegister.addEventListener("click", () => {
         const email = document.querySelector(".email").value;
         const password = document.querySelector(".password").value;
-        const confirmpassword = document.querySelector(".confirmpassword").value;
+        const confirmpassword =
+          document.querySelector(".confirmpassword").value;
 
         if (password == confirmpassword) {
           createUserWithEmailAndPassword(auth, email, password)

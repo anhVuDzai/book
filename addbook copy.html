@@ -85,20 +85,9 @@
         </div>
       </div>
 
-      <div class="font">
-        <h1>Add Doc</h1>
-
-        <input type="text" placeholder="title" class="title" /> <br />
-        <input type="text" placeholder="content" class="content" /> <br />
-        <input type="date" placeholder="date" class="date" /><br />
-        <input type="text" placeholder="des" class="des" /><br />
-        <input type="text" placeholder="img" class="img" /><br />
-        <div style="display: flex">
-          <label for="">publisher</label>
-          <div class="publisher"></div>
-        </div>
-
-        <button class="submit">submit</button>
+      <div class="display">
+        <h2 class="font">Truyện của tôi</h2>
+        <div id="book" style="display: grid;"></div>
       </div>
     </div>
 
@@ -167,71 +156,96 @@
         }
       });
 
-      document.querySelector(".submit").addEventListener("click", async () => {
-        const title = document.querySelector(".title").value;
-        const des = document.querySelector(".des").value;
-        const content = document.querySelector(".content").value;
-        const img = document.querySelector(".img").value;
-        const date = document.querySelector(".date").value;
-
-        if (!title) {
-          console.log("title?");
-          return;
-        }
-
-        if (!des) {
-          console.log("des?");
-          return;
-        }
-
-        if (!content) {
-          console.log("content?");
-          return;
-        }
-
-        if (!img) {
-          console.log("img?");
-          return;
-        }
-
-        if (!date) {
-          console.log("date?");
-          return;
-        } else {
-          console.log(date);
-          // Format date.
-        }
-
-        const data = {
-          title: title,
-          des: des,
-          img: img,
-          date: date,
-          publisher: currentUser,
-          content: content,
-        };
-
-        function clearForm() {
-          document.querySelector(".title").value = "";
-          document.querySelector(".des").value = "";
-          document.querySelector(".content").value = "";
-          document.querySelector(".img").value = "";
-          document.querySelector(".date").value = "";
-        }
+      async function loadBook() {
+        const book = document.getElementById("book");
+        book.classList.add("empty");
+        book.innerHTML = "<p class='empty-message font'>Đang tải...</p>";
 
         try {
-          console.log("Submitting...");
-          await addDoc(collection(db, "book"), data);
-          console.log("Submit!");
-          alert("submit");
+          const q = query(
+            collection(db, "book"),
+            where("publisher", "==", currentUser),
+            orderBy("title")
+          );
+          const querySnapshot = await getDocs(q);
 
-          clearForm();
-          loadBook();
+          if (querySnapshot.empty) {
+            book.classList.add("empty");
+            book.innerHTML =
+              "<p class='empty-message font'>Chưa có truyện nào.</p>";
+            return;
+          }
+
+          let html = "";
+
+          querySnapshot.forEach((docSnap) => {
+            const showbook = docSnap.data();
+            const id = docSnap.id;
+
+            html += `<div
+            class="book-card font"
+            >
+            <div class="book-body" style="display: flex; margin: 10px;">
+              <img
+              src="${showbook.img}"
+              alt="${showbook.img}"
+              class="book-img"
+              onerror="this.src='https://dulichthuyphico.com/img/no-image.png'"
+              style="height: 220px; width: 160px; background-color: gray; border-radius: 5px;"
+              />
+              
+              <div class="book-info" style="margin-left: 10px;">
+                <h3 class="book-title">${showbook.title}</h3>
+            <p class="overflow">
+              <span>📅</span> <strong>Ngày:</strong> ${showbook.date}
+            </p>
+            <p class="overflow">
+              <span>📝</span> <strong>Mô tả:</strong> ${showbook.des}
+              </p>
+              <p class="overflow">
+              <span>👤</span> <strong>Người:</strong> ${showbook.publisher}
+              </p>
+              <p class="overflow"><strong>ID:</strong> ${id}</p>
+              </div>
+              </div>
+              
+              <div class="book-actions" style="margin: 10px;">
+                <button
+                class="buttonsty"
+                style="width: 100px; background-color: rgb(46, 120, 145)"
+                onclick="editBook('${id}')"
+          >
+          Sửa
+          </button>
+          <button
+          class="buttonsty"
+          style="width: 100px; background-color: rgb(180, 46, 46)"
+          onclick="deleteBook('${id}')"
+          >
+          Xóa
+          </button>
+          </div>
+          </div>
+          `;
+          });
+          book.innerHTML = html;
         } catch (error) {
-          console.error(error);
-          alert(error.message);
+          book.innerHTML = `<p class='error-message'>Lỗi tải dữ liệu: ${error.message}</p>`;
         }
-      });
+      }
+
+      window.deleteBook = async (id) => {
+        if (confirm("Delete?")) {
+          try {
+            await deleteDoc(doc(db, "book", id));
+            loadBook();
+          } catch (error) {
+            alert(error.message);
+          }
+        } else {
+          return;
+        }
+      };
 
       document.querySelector(".addBook").addEventListener("click", async () => {
         window.location.href = "addbook.html";

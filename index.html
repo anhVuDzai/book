@@ -3,40 +3,252 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Menu</title>
+    <link rel="stylesheet" href="./asset/css/mainstyle.css" />
+    <link rel="stylesheet" href="./asset/css/reset.css" />
+    <link rel="stylesheet" href="./asset/css/button.css" />
   </head>
   <body>
+    <div>
+      <div class="navBar">
+        <div
+          style="
+            padding: 0 50px;
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+          "
+        >
+          <div class="logo">
+            <p style="margin-left: 5px; font-size: xx-large">
+              <a
+                class="font"
+                style="text-decoration: none; color: #5f6368"
+                href="index.html"
+                >Book.</a
+              >
+            </p>
+          </div>
+
+          <div class="nav-content" style="display: flex; align-items: center">
+            <button
+              class="buttonsty addBook"
+              type="button"
+              style="
+                background-color: rgba(28, 156, 92, 0.774);
+                width: 150px;
+                margin-right: 20px;
+              "
+            >
+              + Thêm Truyện
+            </button>
+
+            <div class="username" style="display: flex; align-items: center">
+              <a href="addbook copy.html">
+                <div
+                  style="
+                    border: 0px solid;
+                    border-radius: 50%;
+                    background-color: gray;
+                    width: 35px;
+                    height: 35px;
+                    margin-right: 5px;
+                  "
+                ></div>
+              </a>
+              <div>
+                <a
+                  href="addbook copy.html"
+                  class="font"
+                  style="text-decoration: none; color: #5f6368"
+                >
+                  <p class="user">Đang tải...</p>
+                </a>
+              </div>
+            </div>
+
+            <button
+              class="buttonsty logout"
+              type="button"
+              style="
+                background-color: rgba(255, 61, 61, 0.774);
+                width: 100px;
+                margin-left: 20px;
+              "
+            >
+              Log out
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="
+          background-color: #ffffff;
+          margin: 10px;
+          max-width: 1200px;
+          margin-left: 350px;
+        "
+      >
+        <div class="bookdisplay">
+          <div class="best">
+            <div class="bkType">
+              <div class="book" style="display: grid;">
+                <div id="favourite" class="font"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div
+          style="
+            border: 0;
+            border-top: 1px solid gray;
+            max-width: 80%;
+            align-items: center;
+            margin-left: 10%;
+            display: flex;
+            justify-content: space-between;
+          "
+        >
+          <div class="font" style="color: rgba(12, 12, 12, 0.719)">
+            <div style="font-size: small">
+              <p>&copy; 2025 Book. All rights reserved.</p>
+            </div>
+          </div>
+          <div style="display: flex"></div>
+        </div>
+      </div>
+    </div>
     <script type="module">
-      // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
       import {
         getFirestore,
         collection,
         getDocs,
+        query,
+        orderBy,
+        where,
       } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
-
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
       const firebaseConfig = {
-        apiKey: "AIzaSyAuOoEfIybpFl_esNkPdO06X6s6Fvsyt3Q",
-        authDomain: "jsi36-7de41.firebaseapp.com",
-        projectId: "jsi36-7de41",
-        storageBucket: "jsi36-7de41.firebasestorage.app",
-        messagingSenderId: "369327670545",
-        appId: "1:369327670545:web:8eea75fb64f81726f4f8b0",
-        measurementId: "G-W8WFM9KTW9",
+        apiKey: "AIzaSyCqtouu7EB6vThIRKJ6VSA8MURsIXQfuWI",
+        authDomain: "book-4469c.firebaseapp.com",
+        projectId: "book-4469c",
+        storageBucket: "book-4469c.firebasestorage.app",
+        messagingSenderId: "597597915442",
+        appId: "1:597597915442:web:ff624237ef7d52961d6f2b",
+        measurementId: "G-8DNPL9NF8P",
       };
 
       const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
       const db = getFirestore(app);
 
-      let data = await getDocs(collection(db, "product"));
+      let currentUser = "";
 
-      data.forEach((item) => {
-        console.log(item.data());
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          currentUser = user.email;
+          document.querySelector(".user").innerText = currentUser;
+          loadBook();
+        } else {
+          window.location.href = "login.html";
+        }
+      });
+
+      document.querySelector(".logout").addEventListener("click", async () => {
+        if (confirm("Sign Out?")) {
+          signOut(auth)
+            .then(() => {
+              console.log("sign out");
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        } else {
+          return;
+        }
+      });
+
+      async function loadBook() {
+        const book = document.getElementById("favourite");
+        book.classList.add("empty");
+        book.innerHTML = "<p class='empty-message font'>Đang tải...</p>";
+
+        try {
+          const q = query(collection(db, "book"), orderBy("title"));
+          const querySnapshot = await getDocs(q);
+
+          if (querySnapshot.empty) {
+            book.classList.add("empty");
+            book.innerHTML =
+              "<p class='empty-message font'>Chưa có truyện nào.</p>";
+            return;
+          }
+
+          let html = "";
+          querySnapshot.forEach((docSnap) => {
+            const showbook = docSnap.data();
+            const id = docSnap.id;
+
+            html += `<div
+            class="book-card font"
+            >
+            <div class="book-body" style="display: flex; margin: 10px;">
+              <img
+              src="${showbook.img}"
+              alt="${showbook.img}"
+              class="book-img"
+              onerror="this.src='https://dulichthuyphico.com/img/no-image.png'"
+              style="height: 220px; width: 160px; background-color: gray; border-radius: 5px;"
+              />
+              
+              <div class="book-info" style="margin-left: 10px;">
+                <h3 class="book-title">${showbook.title}</h3>
+            <p class="overflow">
+              <span>📅</span> <strong>Ngày:</strong> ${showbook.date}
+            </p>
+            <p class="overflow">
+              <span>📝</span> <strong>Mô tả:</strong> ${showbook.des}
+              </p>
+              <p class="overflow">
+              <span>👤</span> <strong>Người:</strong> ${showbook.publisher}
+              </p>
+              <p class="overflow"><strong>ID:</strong> ${id}</p>
+              </div>
+              </div>
+          </div>
+          `;
+          });
+          book.innerHTML = html;
+        } catch (error) {
+          book.innerHTML = `<p class='error-message'>Lỗi tải dữ liệu: ${error.message}</p>`;
+        }
+      }
+
+      document.querySelector(".logout").addEventListener("click", async () => {
+        if (confirm("Sign Out?")) {
+          signOut(auth)
+            .then(() => {
+              console.log("sign out");
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        } else {
+          return;
+        }
+      });
+
+      document.querySelector(".addBook").addEventListener("click", async () => {
+        window.location.href = "addbook.html";
       });
     </script>
   </body>
