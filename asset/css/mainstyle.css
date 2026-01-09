@@ -4,7 +4,7 @@
   font-weight: 500;
 }
 .navBar {
-  height: 50px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -51,6 +51,7 @@
 
 .book-card {
   border: 0px solid #d5d5d5;
+  max-width: 380px;
   margin: 10px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
@@ -65,11 +66,13 @@
 
 #favourite {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-items: center;
 }
 
 #book {
-  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  grid-template-columns: repeat(auto-fill, auto auto auto);
   gap: 15px;
 }

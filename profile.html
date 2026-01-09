@@ -1,12 +1,9 @@
-<!-- *** -->
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="./asset/css/style.css" />
+    <title>Profile</title>
     <link rel="stylesheet" href="./asset/css/mainstyle.css" />
     <link rel="stylesheet" href="./asset/css/reset.css" />
     <link rel="stylesheet" href="./asset/css/button.css" />
@@ -97,49 +94,42 @@
           </div>
         </div>
       </div>
-
-      <div class="font">
-        <h1>Add Doc</h1>
-
-        <input type="text" placeholder="title" class="title" /> <br />
-        <input type="text" placeholder="content" class="content" /> <br />
-        <input type="date" placeholder="date" class="date" /><br />
-        <input type="text" placeholder="des" class="des" /><br />
-        <input type="file" placeholder="img" class="img" /><br />
-        <div style="display: flex">
-          <label for="">publisher</label>
-          <div class="publisher"></div>
+      <div class="footer">
+        <div
+          style="
+            border: 0;
+            border-top: 1px solid gray;
+            max-width: 80%;
+            align-items: center;
+            margin-left: 10%;
+            display: flex;
+            justify-content: space-between;
+          "
+        >
+          <div class="font" style="color: rgba(12, 12, 12, 0.719)">
+            <div style="font-size: small">
+              <p>&copy; 2025 Book. All rights reserved.</p>
+            </div>
+          </div>
+          <div style="display: flex"></div>
         </div>
-
-        <button class="submit">submit</button>
       </div>
     </div>
-
     <script type="module">
-      // Import the functions you need from the SDKs you need
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-      import {
-        getFirestore,
-        collection,
-        addDoc,
-        getDocs,
-        doc,
-        updateDoc,
-        deleteDoc,
-        query,
-        orderBy,
-        where,
-      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
       import {
         getAuth,
         onAuthStateChanged,
         signOut,
       } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
-      // TODO: Add SDKs for Firebase products that you want to use
-      // https://firebase.google.com/docs/web/setup#available-libraries
-
-      // Your web app's Firebase configuration
-      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        orderBy,
+        where,
+      } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyCqtouu7EB6vThIRKJ6VSA8MURsIXQfuWI",
@@ -152,8 +142,9 @@
       };
 
       const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
       const auth = getAuth(app);
+      const db = getFirestore(app);
+
       let currentUser = "";
 
       onAuthStateChanged(auth, (user) => {
@@ -162,87 +153,8 @@
           document.querySelector(".user").innerText = currentUser;
           loadBook();
         } else {
-          window.location.href = "login.html";
-        }
-      });
-
-      document.querySelector(".logout").addEventListener("click", async () => {
-        if (confirm("Sign Out?")) {
-          signOut(auth)
-            .then(() => {
-              console.log("sign out");
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        } else {
-          return;
-        }
-      });
-
-      document.querySelector(".submit").addEventListener("click", async () => {
-        const title = document.querySelector(".title").value;
-        const des = document.querySelector(".des").value;
-        const content = document.querySelector(".content").value;
-        const img = document.querySelector(".img").value;
-        const date = document.querySelector(".date").value;
-
-        if (!title) {
-          console.log("title?");
-          return;
-        }
-
-        if (!des) {
-          console.log("des?");
-          return;
-        }
-
-        if (!content) {
-          console.log("content?");
-          return;
-        }
-
-        if (!img) {
-          console.log("img?");
-          return;
-        }
-
-        if (!date) {
-          console.log("date?");
-          return;
-        } else {
-          console.log(date);
-          // Format date.
-        }
-
-        const data = {
-          title: title,
-          des: des,
-          img: img,
-          date: date,
-          publisher: currentUser,
-          content: content,
-        };
-
-        function clearForm() {
-          document.querySelector(".title").value = "";
-          document.querySelector(".des").value = "";
-          document.querySelector(".content").value = "";
-          document.querySelector(".img").value = "";
-          document.querySelector(".date").value = "";
-        }
-
-        try {
-          console.log("Submitting...");
-          await addDoc(collection(db, "book"), data);
-          console.log("Submit!");
-          alert("submit");
-
-          clearForm();
+          document.querySelector(".user").innerHTML = "Chưa có tài khoản";
           loadBook();
-        } catch (error) {
-          console.error(error);
-          alert(error.message);
         }
       });
 

@@ -7,93 +7,111 @@
     <link rel="stylesheet" href="./asset/css/mainstyle.css" />
     <link rel="stylesheet" href="./asset/css/reset.css" />
     <link rel="stylesheet" href="./asset/css/button.css" />
+    <link rel="stylesheet" href="./asset/css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div>
-      <div class="navBar">
-        <div
-          style="
-            padding: 0 50px;
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-          "
-        >
-          <div class="logo">
-            <p style="margin-left: 5px; font-size: xx-large">
-              <a
-                class="font"
-                style="text-decoration: none; color: #5f6368"
-                href="index.html"
-                >Book.</a
+      <div
+        style="
+          width: 100%;
+          height: 70px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 60px;
+          background: white;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+        "
+      >
+        <div style="display: flex; align-items: center">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <div style="line-height: 1">
+              <div
+                style="
+                  font-family: 'Playfair Display', serif;
+                  font-size: 45px;
+                  font-weight: 600;
+                "
               >
-            </p>
-          </div>
-
-          <div class="nav-content" style="display: flex; align-items: center">
-            <button
-              class="buttonsty addBook"
-              type="button"
-              style="
-                background-color: rgba(28, 156, 92, 0.774);
-                width: 150px;
-                margin-right: 20px;
-              "
-            >
-              + Thêm Truyện
-            </button>
-
-            <div class="username" style="display: flex; align-items: center">
-              <a href="addbook copy.html">
-                <div
-                  style="
-                    border: 0px solid;
-                    border-radius: 50%;
-                    background-color: gray;
-                    width: 35px;
-                    height: 35px;
-                    margin-right: 5px;
-                  "
-                ></div>
-              </a>
-              <div>
-                <a
-                  href="addbook copy.html"
-                  class="font"
-                  style="text-decoration: none; color: #5f6368"
-                >
-                  <p class="user">Đang tải...</p>
-                </a>
+                Book
               </div>
             </div>
-
-            <button
-              class="buttonsty logout"
-              type="button"
-              style="
-                background-color: rgba(255, 61, 61, 0.774);
-                width: 100px;
-                margin-left: 20px;
-              "
-            >
-              Log out
-            </button>
           </div>
+
+          <div
+            style="display: flex; gap: 28px; font-size: 20px; margin-left: 80px"
+          >
+            <a href="#" style="text-decoration: none; color: #000">About Us</a>
+            <a href="#" style="text-decoration: none; color: #000"
+              >My Account</a
+            >
+          </div>
+        </div>
+
+        <!-- <div style="display: flex; gap: 20px; align-items: center">
+          <div style="position: relative; font-size: 20px">
+            🛒
+            <span
+              style="
+                position: absolute;
+                top: -6px;
+                right: -8px;
+                background: #00c853;
+                color: white;
+                border-radius: 50%;
+                font-size: 10px;
+                padding: 2px 5px;
+              "
+              >0</span
+            >
+          </div>
+
+          <div style="position: relative; font-size: 20px">
+            ❤️
+            <span
+              style="
+                position: absolute;
+                top: -6px;
+                right: -8px;
+                background: #00c853;
+                color: white;
+                border-radius: 50%;
+                font-size: 10px;
+                padding: 2px 5px;
+              "
+              >0</span
+            >
+          </div>
+        </div> -->
+
+        <div class="logbtn">
+          <button
+            class="buttonsty logout"
+            type="button"
+            style="
+              background-color: rgba(255, 61, 61, 0.774);
+              width: 100px;
+              margin-left: 20px;
+            "
+          >
+            Log out
+          </button>
         </div>
       </div>
 
-      <div
-        style="
-          background-color: #ffffff;
-          margin: 10px;
-          max-width: 1200px;
-          margin-left: 350px;
-        "
-      >
+      <div class="banner">
+        <div class="overlay"></div>
+      </div>
+
+      <div style="background-color: #ffffff; margin: 10px; max-width: auto">
         <div class="bookdisplay">
           <div class="best">
             <div class="bkType">
-              <div class="book" style="display: grid;">
+              <div class="book" style="display: grid">
                 <div id="favourite" class="font"></div>
               </div>
             </div>
@@ -121,6 +139,63 @@
         </div>
       </div>
     </div>
+
+    <script type="module">
+      fetch(
+        "https://www.googleapis.com/books/v1/volumes?q=js&maxResults=40&key=AIzaSyDxb0u7cxqiPJvvzTRT0GNO4duEZorSSm8"
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (!data.items) {
+            console.log("Không có sách trả về");
+            return;
+          } else {
+            const container = document.getElementById("favourite");
+
+            data.items.forEach((book) => {
+              const info = book.volumeInfo;
+              console.log(info);
+
+              const div = document.createElement("div");
+              div.style.margin = "5px";
+
+              div.innerHTML = `<div style="border-radius: 8px; box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;"> <div style="margin: 20px">
+          <img src="${info.imageLinks.thumbnail || ""}" width="120" />
+          <h4 class="font overflow" style="font-size: 17px; font-weight: bolder">${
+            info.title
+          }</h4>
+          <p class="font overflow">${
+            info.authors?.join(", ") || "Unknown"
+          }</p></div></div>
+        `;
+
+              container.appendChild(div);
+            });
+          }
+        });
+    </script>
+
+    <script>
+      fetch(
+        "https://www.googleapis.com/books/v1/volumes?q=harry+potter&key=AIzaSyDxb0u7cxqiPJvvzTRT0GNO4duEZorSSm8"
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          data.items.forEach((book) => {
+            const info = book.volumeInfo;
+            const price = book.saleInfo?.listPrice;
+
+            console.log("Tên:", info.title);
+            console.log(
+              "Giá:",
+              price
+                ? `${price.amount} ${price.currencyCode}`
+                : "Miễn phí / Không bán"
+            );
+          });
+        });
+    </script>
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
       import {
@@ -157,81 +232,11 @@
         if (user) {
           currentUser = user.email;
           document.querySelector(".user").innerText = currentUser;
-          loadBook();
         } else {
-          window.location.href = "login.html";
+          document.querySelector(".user").innerHTML = "Chưa có tài khoản";
+          setupButtons(user);
         }
       });
-
-      document.querySelector(".logout").addEventListener("click", async () => {
-        if (confirm("Sign Out?")) {
-          signOut(auth)
-            .then(() => {
-              console.log("sign out");
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-        } else {
-          return;
-        }
-      });
-
-      async function loadBook() {
-        const book = document.getElementById("favourite");
-        book.classList.add("empty");
-        book.innerHTML = "<p class='empty-message font'>Đang tải...</p>";
-
-        try {
-          const q = query(collection(db, "book"), orderBy("title"));
-          const querySnapshot = await getDocs(q);
-
-          if (querySnapshot.empty) {
-            book.classList.add("empty");
-            book.innerHTML =
-              "<p class='empty-message font'>Chưa có truyện nào.</p>";
-            return;
-          }
-
-          let html = "";
-          querySnapshot.forEach((docSnap) => {
-            const showbook = docSnap.data();
-            const id = docSnap.id;
-
-            html += `<div
-            class="book-card font"
-            >
-            <div class="book-body" style="display: flex; margin: 10px;">
-              <img
-              src="${showbook.img}"
-              alt="${showbook.img}"
-              class="book-img"
-              onerror="this.src='https://dulichthuyphico.com/img/no-image.png'"
-              style="height: 220px; width: 160px; background-color: gray; border-radius: 5px;"
-              />
-              
-              <div class="book-info" style="margin-left: 10px;">
-                <h3 class="book-title">${showbook.title}</h3>
-            <p class="overflow">
-              <span>📅</span> <strong>Ngày:</strong> ${showbook.date}
-            </p>
-            <p class="overflow">
-              <span>📝</span> <strong>Mô tả:</strong> ${showbook.des}
-              </p>
-              <p class="overflow">
-              <span>👤</span> <strong>Người:</strong> ${showbook.publisher}
-              </p>
-              <p class="overflow"><strong>ID:</strong> ${id}</p>
-              </div>
-              </div>
-          </div>
-          `;
-          });
-          book.innerHTML = html;
-        } catch (error) {
-          book.innerHTML = `<p class='error-message'>Lỗi tải dữ liệu: ${error.message}</p>`;
-        }
-      }
 
       document.querySelector(".logout").addEventListener("click", async () => {
         if (confirm("Sign Out?")) {
@@ -250,6 +255,38 @@
       document.querySelector(".addBook").addEventListener("click", async () => {
         window.location.href = "addbook.html";
       });
+
+      document.querySelector(".myBook").addEventListener("click", async () => {
+        window.location.href = "myBook.html";
+      });
+
+      function setupButtons(user) {
+        const logBtn = document.querySelector(".logbtn");
+
+        if (user) {
+          logBtn.innerHTML = `
+      <button class="buttonsty logout"
+        style="background-color: rgba(255, 61, 61, 0.774); width: 100px;">
+        Log out
+      </button>
+    `;
+
+          document.querySelector(".logout").onclick = () => {
+            if (confirm("Sign Out?")) signOut(auth);
+          };
+        } else {
+          logBtn.innerHTML = `
+      <button class="buttonsty login"
+        style="background-color: rgba(0 , 100, 255, 0.719); width: 100px; margin-left: 20px">
+        Log in
+      </button>
+    `;
+
+          document.querySelector(".login").onclick = () => {
+            window.location.href = "login.html";
+          };
+        }
+      }
     </script>
   </body>
 </html>

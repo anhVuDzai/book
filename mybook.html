@@ -46,8 +46,20 @@
               + Thêm Truyện
             </button>
 
+            <button
+              class="buttonsty myBook"
+              type="button"
+              style="
+                background-color: rgba(139, 139, 139, 0.774);
+                width: 150px;
+                margin-right: 20px;
+              "
+            >
+              Truyện của tôi
+            </button>
+
             <div class="username" style="display: flex; align-items: center">
-              <a href="addbook copy.html">
+              <a href="profile.html">
                 <div
                   style="
                     border: 0px solid;
@@ -61,7 +73,7 @@
               </a>
               <div>
                 <a
-                  href="addbook copy.html"
+                  href="profile.html"
                   class="font"
                   style="text-decoration: none; color: #5f6368"
                 >
@@ -69,18 +81,19 @@
                 </a>
               </div>
             </div>
-
-            <button
-              class="buttonsty logout"
-              type="button"
-              style="
-                background-color: rgba(255, 61, 61, 0.774);
-                width: 100px;
-                margin-left: 20px;
-              "
-            >
-              Log out
-            </button>
+            <div class="logbtn">
+              <button
+                class="buttonsty logout"
+                type="button"
+                style="
+                  background-color: rgba(255, 61, 61, 0.774);
+                  width: 100px;
+                  margin-left: 20px;
+                "
+              >
+                Log out
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -249,6 +262,10 @@
 
       document.querySelector(".addBook").addEventListener("click", async () => {
         window.location.href = "addbook.html";
+      });
+
+      document.querySelector(".myBook").addEventListener("click", async () => {
+        window.location.href = "myBook.html";
       });
     </script>
   </body>
